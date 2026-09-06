@@ -4,7 +4,9 @@
 
 Please do **not** open a public issue for a security vulnerability.
 
-Instead, report it privately to: `[REPLACE WITH YOUR CONTACT EMAIL]`
+Instead, open a [confidential issue](https://gitlab.com/smv-k8x-2741/smooth-delete/-/issues/new?issue%5Bconfidential%5D=true)
+on GitLab — confidential issues are only visible to project maintainers,
+not the public.
 
 Include:
 
