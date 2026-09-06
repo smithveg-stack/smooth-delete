@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SmoothDelete — jQuery legacy example</title>
+<meta name="csrf-token" content="demo-token-not-checked-in-this-static-example">
+<link rel="stylesheet" href="../../assets/smooth-delete.css">
+<style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; }
+    table { width: 100%; border-collapse: collapse; }
+    td, th { padding: 0.6rem 0.5rem; border-bottom: 1px solid #ddd; text-align: left; }
+    button { cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>SmoothDelete — jQuery legacy example</h1>
+<p>
+    This static page fakes the server response client-side (no backend here) so you
+    can see the animation. See <code>examples/plain-php</code> for a real endpoint.
+</p>
+
+<div data-table-wrapper>
+    <table data-table>
+        <thead>
+            <tr><th>ID</th><th>Name</th><th></th></tr>
+        </thead>
+        <tbody>
+            <tr data-delete-row>
+                <td>1</td>
+                <td>Ada Lovelace</td>
+                <td><button type="button" data-delete-url="/demo/delete/1" data-delete-mode="safe">Delete</button></td>
+            </tr>
+            <tr data-delete-row>
+                <td>2</td>
+                <td>Grace Hopper</td>
+                <td><button type="button" data-delete-url="/demo/delete/2" data-delete-mode="optimistic">Delete (optimistic)</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <p data-empty-state hidden class="sd-empty-state">No records left.</p>
+</div>
+
+<div id="sd-status" class="sd-status" role="status" aria-live="polite" hidden></div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    // Demo-only fake XHR so this page works with no backend.
+    // Real usage: delete examples/jquery-legacy/index.html's mock and let
+    // smooth-delete.jquery.js's $.ajax call your real endpoint.
+    (function () {
+        var realAjax = jQuery.ajax;
+        jQuery.ajax = function (options) {
+            var deferred = jQuery.Deferred();
+            setTimeout(function () {
+                var isOptimisticDemo = options.url.indexOf("/2") !== -1;
+                if (isOptimisticDemo) {
+                    deferred.reject({}, "error");
+                } else {
+                    deferred.resolve({ success: true });
+                }
+            }, 150);
+            return deferred.promise();
+        };
+    })();
+</script>
+<script src="smooth-delete.jquery.js"></script>
+</body>
+</html>

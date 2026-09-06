@@ -1,0 +1,85 @@
+/*
+ * SmoothDelete — shared stylesheet
+ *
+ * Animates a table row out of view in two stages:
+ *   1. fade + slight scale-down (opacity/transform)
+ *   2. height collapse (padding + scaleY) so no blank gap is left behind
+ *
+ * Usage:
+ *   <tr data-delete-row>...</tr>
+ *   JS adds .delete-row-leaving, then .delete-row-fading (next frame),
+ *   then .delete-row-collapsing, then removes the node.
+ */
+
+[data-delete-row] {
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: center;
+}
+
+[data-delete-row] td {
+    transition: padding 200ms ease;
+}
+
+.delete-row-leaving {
+    transition:
+        opacity 200ms ease,
+        transform 200ms ease;
+}
+
+.delete-row-fading {
+    opacity: 0;
+    transform: scale(0.96);
+}
+
+.delete-row-collapsing {
+    transform: scaleY(0);
+    transition:
+        transform 200ms ease;
+}
+
+.delete-row-collapsing td {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+/* Delete button while a request is in flight */
+[data-delete-url][disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Accessible status region for success/error messages */
+.sd-status {
+    margin: 0.75rem 0;
+}
+
+.sd-status[hidden] {
+    display: none;
+}
+
+.sd-status--error {
+    color: #b00020;
+}
+
+.sd-status--warning {
+    color: #8a6d00;
+}
+
+.sd-empty-state {
+    padding: 1rem;
+    text-align: center;
+    color: #666;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-delete-row],
+    [data-delete-row] td,
+    .delete-row-leaving,
+    .delete-row-collapsing {
+        transition-duration: 1ms !important;
+    }
+}

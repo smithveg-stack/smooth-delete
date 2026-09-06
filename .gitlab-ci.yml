@@ -1,0 +1,14 @@
+stages:
+  - lint
+
+lint:php:
+  stage: lint
+  image: php:8.2-cli
+  script:
+    - php -l examples/plain-php/index.php
+    - php -l examples/plain-php/delete.php
+    - php -l examples/plain-php/db.php
+    - php -l examples/plain-php/csrf.php
+  rules:
+    - changes:
+        - examples/plain-php/**/*
